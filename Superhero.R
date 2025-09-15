@@ -34,8 +34,9 @@ ggplot(revenue_by_category, aes(x = reorder(`Category Name`, -TotalRevenue), y =
        y = "Total Revenue") +
   scale_y_continuous(labels = label_number(scale = 1e-6, suffix = "M")) +  # shows in millions
   theme_minimal() +
+  coord_flip() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-  coord_flip() #flip chart
+
 
 
 
