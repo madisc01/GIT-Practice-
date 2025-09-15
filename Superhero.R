@@ -28,13 +28,14 @@ revenue_by_category <- df %>%
 library(scales)  # for label formatting
 
 ggplot(revenue_by_category, aes(x = reorder(`Category Name`, -TotalRevenue), y = TotalRevenue)) +
-  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_bar(stat = "identity", fill = "forestgreen") +
   labs(title = "Total Revenue by Category",
        x = "Category",
        y = "Total Revenue") +
   scale_y_continuous(labels = label_number(scale = 1e-6, suffix = "M")) +  # shows in millions
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  coord_flip() #flip chart
 
 
 
