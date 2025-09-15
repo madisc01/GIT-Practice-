@@ -4,7 +4,7 @@ library(tidyr)
 library(ggplot2)
 
 # Load the dataset
-df <- read_excel("Dream_Supershop_Dataset.xlsx")
+df <- read_excel("Dream_Supershop_Dataset.xlsx", sheet = "Sales Data")
 
 # View structure
 str(df)
@@ -18,20 +18,27 @@ df <- df %>% mutate(across(where(is.numeric), ~replace_na(., median(., na.rm = T
 # Remove rows with any remaining missing values
 df <- df %>% drop_na()
 
-# Summarize sales by category
-sales_summary <- df %>%
-  group_by(Category) %>%
-  summarise(Total_Sales = sum(Sales, na.rm = TRUE)) %>%
-  arrange(desc(Total_Sales))
 
-# Plot
-ggplot(sales_summary, aes(x = reorder(Category, -Total_Sales), y = Total_Sales)) +
+# Summarise total revenue by category
+revenue_by_category <- df %>%
+  group_by(`Category Name`) %>%
+  summarise(TotalRevenue = sum(Revenue, na.rm = TRUE)) %>%
+  arrange(desc(TotalRevenue))
+
+library(scales)  # for label formatting
+
+ggplot(revenue_by_category, aes(x = reorder(`Category Name`, -TotalRevenue), y = TotalRevenue)) +
   geom_bar(stat = "identity", fill = "steelblue") +
-  labs(title = "Total Sales by Product Category",
+  labs(title = "Total Revenue by Category",
        x = "Category",
-       y = "Total Sales") +
-  theme_minimal()
-#test
+       y = "Total Revenue") +
+  scale_y_continuous(labels = label_number(scale = 1e-6, suffix = "M")) +  # shows in millions
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+
 
 
 
